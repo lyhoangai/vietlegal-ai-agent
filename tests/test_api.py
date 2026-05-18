@@ -4,6 +4,7 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 
 from src.api.main import app
+import src.eval.db as eval_db
 import src.api.routes as routes
 
 
@@ -38,6 +39,20 @@ async def test_eval_metrics_endpoint():
     assert "context_precision" in data
     assert "faithfulness" in data
     assert "answer_correctness" in data
+    assert "benchmark_snapshot" in data
+
+@pytest.mark.asyncio
+async def test_eval_metrics_endpoint_uses_benchmark_snapshot_when_empty_db(tmp_path, monkeypatch):
+    monkeypatch.setattr(eval_db, "DB_PATH", str(tmp_path / "empty-eval.db"))
+
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.get("/eval/metrics")
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total_evaluations"] == 0
+    assert data["benchmark_snapshot"]["cases"] == 300
+    assert data["benchmark_snapshot"]["pass_rate"] > 0.9
 
 
 @pytest.mark.asyncio
