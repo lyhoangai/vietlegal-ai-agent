@@ -1,40 +1,62 @@
 # VietLegal Traffic RAG
 
+Scoped Vietnamese traffic-law RAG demo for AI engineer / RAG engineer interviews.
+
+[Public demo](https://huggingface.co/spaces/lyhoang0104ls/vietlegal-traffic-rag) | [GitHub](https://github.com/lyhoangai/vietlegal-traffic-rag) | [Benchmark summary](docs/benchmarks/latest_summary.md) | [Demo script](docs/demo-script.md)
+
 ![CI workflow](docs/assets/ci-badge.svg)
 
-Scoped Vietnamese traffic-law RAG for the `LLM product / RAG engineer` lane. The app answers a narrow set of traffic-law questions, keeps short-term session memory, and can verify official sources when the user asks for a web-confirmed answer.
+## One-line pitch
 
-## Live Demo
+This is a narrow-scope Vietnamese traffic-law assistant with citations, short-term session memory, optional official-source web checks, and reproducible eval artifacts.
 
-- Public demo: [https://huggingface.co/spaces/lyhoang0104ls/vietlegal-traffic-rag](https://huggingface.co/spaces/lyhoang0104ls/vietlegal-traffic-rag)
+Nói ngắn: đây không phải "legal AI biết tất cả". Đây là một demo có phạm vi rõ, có bằng chứng, và có thể deploy thật.
 
-## Overview
+## Why this is worth showing
 
-- narrow scope instead of broad legal-AI claims
-- active 2025 corpus managed through `data/manifest.json`
-- reproducible benchmark artifacts and a public eval package
-- local web demo with SSE streaming, session history, and Vietnamese TTS
-- Docker + Render-ready deployment files for portfolio demos
-- Hugging Face Spaces path for a free public demo
+- scoped problem instead of broad legal-AI claims
+- answers are grounded in citations, not silent guessing
+- follow-up turns work because short-term memory is part of the flow
+- chat history survives refresh
+- benchmark package and summary are committed to the repo
+- Docker, Render, and Hugging Face deployment paths are included
+- a short demo script is ready for live walkthroughs
 
-## Evidence
+## Demo
 
-![Chat UI](docs/assets/chat-ui.png)
+### Current full-page capture
 
-![History Sidebar](docs/assets/history-sidebar.png)
+![Current full-page demo](docs/assets/readme-home-current.png)
 
-### Benchmark Highlights
+### Close-up views
 
-Local benchmark run on `2026-03-27` using the repo-local eval package at [`datasets/vietlegal-traffic-eval-v2/README.md`](datasets/vietlegal-traffic-eval-v2/README.md):
+![Desktop chat demo](docs/assets/chat-ui.png)
 
-| Mode | Cases | Pass Rate | Errors | Citation Rate | Avg Confidence |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| `full` | 300 | 98.3% | 0 | 100.0% | 0.823 |
+![History sidebar](docs/assets/history-sidebar.png)
 
-- Full artifacts: [`docs/benchmarks/latest_summary.md`](docs/benchmarks/latest_summary.md) and [`docs/benchmarks/latest_results.json`](docs/benchmarks/latest_results.json)
-- Dataset package: [`datasets/vietlegal-traffic-eval-v2/README.md`](datasets/vietlegal-traffic-eval-v2/README.md)
-- Dataset publish notes: [`datasets/vietlegal-traffic-eval-v2/README.md`](datasets/vietlegal-traffic-eval-v2/README.md)
-- Demo flow: [`docs/demo-script.md`](docs/demo-script.md)
+Use the walkthrough in [`docs/demo-script.md`](docs/demo-script.md).
+
+What to show in 2-3 minutes:
+
+1. ask a traffic-penalty question
+2. ask a follow-up that depends on memory
+3. refresh and show history recovery
+4. ask an out-of-scope question and show refusal
+5. point to the benchmark summary as proof
+
+## Benchmark Highlights
+
+Local benchmark run on `2026-03-27` using [`datasets/vietlegal-traffic-eval-v2/README.md`](datasets/vietlegal-traffic-eval-v2/README.md):
+
+| Mode | Cases | Pass Rate | Errors | Citation Rate | Reference Match | Avg Confidence | Web Usage |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `full` | 300 | 98.3% | 0 | 100.0% | 99.6% | 0.823 | 70.0% |
+
+Full artifacts:
+
+- [`docs/benchmarks/latest_summary.md`](docs/benchmarks/latest_summary.md)
+- [`docs/benchmarks/latest_results.json`](docs/benchmarks/latest_results.json)
+- [`datasets/vietlegal-traffic-eval-v2/README.md`](datasets/vietlegal-traffic-eval-v2/README.md)
 
 ## Architecture
 
@@ -53,19 +75,19 @@ flowchart LR
     C --> K["Benchmark & Eval Artifacts"]
 ```
 
-This is the real demo pipeline in one view: the browser sends a question to FastAPI, the app reloads short-term memory, retrieves from the active traffic-law corpus, optionally verifies official sources, then streams back an answer with citations and optional Vietnamese TTS.
+This is the real pipeline: browser input goes to FastAPI, the app reloads short-term memory, retrieves from the active traffic-law corpus, optionally verifies official sources, and streams back an answer with citations plus optional Vietnamese TTS.
 
 - Longer walkthrough: [`docs/architecture.md`](docs/architecture.md)
 - Scope statement: this is a traffic-law RAG demo, not a general legal chatbot platform
 
-## Why This Is Trustworthy
+## Why This Feels Trustworthy
 
-- Scoped domain instead of "answer everything" behavior
-- Explicit refusal for out-of-scope topics such as GPLX procedures or vehicle registration
-- Active 2025 corpus policy managed via [`data/manifest.json`](data/manifest.json)
-- Optional official-source web verification when the user explicitly asks for source confirmation
-- Session memory for follow-up turns and sidebar-visible history recovery
-- Benchmarkable pipeline with mode flags for `reranker` and `web fallback`
+- scoped domain instead of "answer everything"
+- explicit refusal for out-of-scope topics
+- active 2025 corpus policy managed via [`data/manifest.json`](data/manifest.json)
+- optional official-source web verification when asked
+- session memory for follow-up turns and sidebar-visible history recovery
+- benchmarkable pipeline with mode flags for reranker and web fallback
 
 ## Quick Start
 
@@ -120,7 +142,7 @@ Build and run the app in a container:
 docker compose up --build
 ```
 
-The container uses [`src/deploy/bootstrap.py`](src/deploy/bootstrap.py) as its startup command. On the first boot it builds Chroma into `/app/storage/chroma_db`, then starts `uvicorn`. Later restarts reuse that storage instead of rebuilding from scratch.
+The container uses [`src/deploy/bootstrap.py`](src/deploy/bootstrap.py) as its startup command. On first boot it builds Chroma into `/app/storage/chroma_db`, then starts `uvicorn`. Later restarts reuse that storage instead of rebuilding from scratch.
 
 What persists in Docker:
 
@@ -134,7 +156,7 @@ What you still need locally:
 
 ## Deploy on Render
 
-This repo now includes a Render Blueprint at [`render.yaml`](render.yaml).
+This repo includes a Render Blueprint at [`render.yaml`](render.yaml).
 
 Recommended flow:
 

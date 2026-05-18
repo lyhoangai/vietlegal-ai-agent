@@ -7,28 +7,43 @@ sdk: docker
 app_port: 7860
 pinned: false
 license: mit
-short_description: Traffic-law RAG with citations, memory, and web checks.
+short_description: Scoped Vietnamese traffic-law RAG with citations, memory, and web checks.
 ---
 
 # VietLegal Traffic RAG
 
-Scoped Vietnamese traffic-law RAG for portfolio demos.
+Scoped Vietnamese traffic-law demo for portfolio and interviews.
 
-## What This Space Shows
+![Current full-page demo](docs/assets/readme-home-current.png)
 
-- narrow legal scope instead of broad legal-AI claims
-- retrieval over an active 2025 traffic-law corpus
+## What this Space shows
+
+- narrow traffic-law scope instead of broad legal-AI claims
+- answers grounded in citations
+- short-term session memory and history recovery
 - optional official-source web verification
-- short-term chat memory
-- Vietnamese TTS for local-style demos
+- Vietnamese TTS for live demos
+- benchmark-backed evaluation in the source repo
+
+## Quick demo
+
+Try:
+
+- a traffic penalty question
+- a follow-up question that depends on memory
+- refresh the page and confirm history returns
+- an out-of-scope question and watch the refusal
+
+For a 2-3 minute talk track, see [the demo script](https://github.com/lyhoangai/vietlegal-traffic-rag/blob/main/docs/demo-script.md).
+
+## Links
+
+- GitHub repo: <https://github.com/lyhoangai/vietlegal-traffic-rag>
+- Benchmark summary: <https://github.com/lyhoangai/vietlegal-traffic-rag/blob/main/docs/benchmarks/latest_summary.md>
+- Source README template: <https://github.com/lyhoangai/vietlegal-traffic-rag/blob/main/README.hf-space.md>
 
 ## Notes
 
-- Free Spaces can sleep after inactivity, so the first wake-up may be slow.
-- This free setup uses non-persistent storage, so chat history and rebuilt Chroma state can reset on restart.
-- Add `GROQ_API_KEY` in the Space settings before testing `/chat`.
-
-## Source Repo
-
-- GitHub: <https://github.com/lyhoangai/vietlegal-traffic-rag>
-- Deploy guide: see `docs/deploy-huggingface-spaces.md` in the source repo
+- free Spaces can sleep after inactivity, so the first wake-up may be slow
+- free storage is non-persistent, so chat history and rebuilt Chroma state can reset on restart
+- add `GROQ_API_KEY` in the Space settings before testing `/chat`

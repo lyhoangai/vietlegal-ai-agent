@@ -97,7 +97,7 @@ Close with:
 
 Show:
 
-- the 33-case benchmark package under `datasets/vietlegal-traffic-eval-v1/`
+- the ~300-case benchmark package under `datasets/vietlegal-traffic-eval-v2/`
 - the benchmark summary at `docs/benchmarks/latest_summary.md`
 - the UI assets in `docs/assets/`
 

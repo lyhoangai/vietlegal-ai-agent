@@ -20,7 +20,7 @@ You need:
 
 - a Hugging Face account
 - a public Space with SDK set to `Docker`
-- this repo checked out on the `render-deploy-vibe` branch or a later branch that includes the same deployment files
+- this repo checked out on `main` or any later branch that already includes the same deployment files
 
 ## Recommended Space Settings
 
@@ -68,6 +68,7 @@ Copy these files from this repo into the Space repo:
 - `datasets/`
 - `docs/assets/chat-ui.png`
 - `docs/assets/history-sidebar.png`
+- `docs/assets/readme-home-current.png`
 - `.dockerignore`
 - `Dockerfile`
 - `requirements.txt`
